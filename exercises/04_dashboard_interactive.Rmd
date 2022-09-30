@@ -1,0 +1,277 @@
+---
+title: "Dashboard Project Name Here" 
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+runtime: shiny
+---
+    
+    
+```{r setup, include=FALSE, warning=FALSE}
+
+# Flexdashboard documentation--- https://rmarkdown.rstudio.com/flexdashboard/index.html
+
+#----------- A Few Notes
+#   - While everything can be included in this RMD, it's usually better to separate the data processing into its own script
+#   - This template is setup to include interactive Shiny elements
+#   - This template includes 2 tabs
+#            - 1) An about page for study description and links to key personnel (or anything else you like)
+#            - 2) A cohort page with place holder elements
+#   - There are a couple of examples of Shiny inputs. 
+#            - To access the gender filter value in this dashboard use input$gender
+#            - To use a Shiny input, you need to wrap it in a "render" call. (ex. renderTable({}))
+#
+# let me know if you have questions
+# -Mike G
+#---------------------------------- Packages ----------------------------------------
+library(flexdashboard)
+library(tidyverse)
+library(shiny)
+library(knitr)
+
+```
+
+
+
+```{r data, include=FALSE}
+
+#---------------------------------- Data Import ----------------------------------------
+
+#some fake data
+id <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+gender <- c("Male", "Female", "Female", "Female", "Male", "Female", "Female", "Female", "Female", "Female", "Male", "Male")
+site <- c("ARZ", "ARZ", "RST", "ARZ", "ARZ", "FLA", "FLA", "ARZ", "RST", "ARZ", "ARZ", "FLA")
+mydata<- data.frame(id, gender, site)
+mydata$id <- as.character(mydata$id)
+#---------------------------------- Data Transformation --------------------------------
+
+
+
+```
+
+
+
+Hi Mom  
+======================================================================
+
+About
+======================================================================
+    
+    
+#### __Add Study Title Here__
+__________________________   
+
+
+__Status__:	Activated   
+__First Enrollment Date:__ `r #add r code here` 
+
+__Projected Number of Patients__:	  
+__Current Accrual__: `r n_distinct(mydata$id)`
+
+
+<hr>
+    
+#### Purpose of Study     
+Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah  
+
+
+    
+ 
+    
+Cohort
+======================================================================
+    
+    
+Inputs {.sidebar data-width=310}
+---------------------------------------  
+<!-- <p style="font-size:70%; color:red;">Dashboard updated: `r format(Sys.time(), '%d %B %Y')`</p>   -->
+    
+__Dashboard last updated on... __   
+
+<hr>    
+    
+__Filters__   
+```{r}
+
+#---------------- Insert Shiny Filters ----------------------
+# examples can be in the Shiny section at https://rmarkdown.rstudio.com/flexdashboard/shiny.html#using_shiny
+
+# 2 examples
+
+# Site
+selectInput("site", 
+            label = "Mayo site",
+            choices = c("All","ARZ","RST","FLA"), 
+            selected = "All")
+
+# Gender (without an "all" option)
+radioButtons("gender", 
+             label = "Gender", 
+             choices = c("Male", "Female"), 
+             selected = NULL,
+             inline = TRUE, 
+             width = NULL, 
+             choiceNames = NULL,
+             choiceValues = NULL)
+
+
+```
+
+
+    
+Row  
+-----------------------------------------------------------------------  
+    
+### <strong>Overall Accrual</strong>
+```{r}
+#########################################################################
+#### Gauges - Enrollment counts                                   #######
+#########################################################################
+# Enrollment counts for all sites
+renderGauge({
+
+  #filter using gender variable  
+  all_count <- if (input$site == "All") n_distinct(mydata$id[mydata$gender == input$gender]) 
+               else n_distinct(mydata$id[mydata$site == input$site & mydata$gender == input$gender])  
+  
+  gauge(all_count,  
+      min = 0, # min value on gauge
+      max = 10, # max value on gauge
+      abbreviate = FALSE, #Abbreviate large numbers for min, max, and value (e.g. 1234567 -> 1.23M)
+      sectors = gaugeSectors(success = c(0, 10), # set range and color update when in range
+                             colors = c("#373F51")))
+})
+```
+
+### Arizona
+```{r}
+
+renderGauge({
+  
+  gauge(n_distinct(mydata$id[mydata$gender == input$gender & mydata$site == "ARZ"]), 
+      min = 0, 
+      max = 5, #target accrual for ARZ
+      abbreviate = FALSE,
+      sectors = gaugeSectors(success = c(0, 60),
+                             colors = c("#A9BCD0")))
+})
+```
+
+### Florida
+```{r}
+renderGauge({
+  
+  gauge(n_distinct(mydata$id[mydata$gender == input$gender & mydata$site == "FLA"]),
+      min = 0, 
+      max = 60, 
+      abbreviate = FALSE,
+      sectors = gaugeSectors(success = c(0, 60),
+                             colors = c("#A9BCD0")))
+})
+```
+
+### Rochester
+```{r}
+renderGauge(
+
+  gauge(n_distinct(mydata$id[mydata$gender == input$gender & mydata$site == "RST"]),
+      min = 0, 
+      max = 60, 
+      abbreviate = FALSE,
+      sectors = gaugeSectors(success = c(0, 60),
+                             colors = c("#A9BCD0")))
+)
+```
+
+### Bob
+```{r}
+
+```
+
+Row  
+-----------------------------------------------------------------------  
+    
+### Accrual Table {data-width=40}
+```{r, echo=FALSE}
+renderTable({
+  
+  select_site <- if (input$site == "All") c("ARZ", "FLA", "RST") else input$site
+  
+  mydata %>% 
+    filter(site %in% select_site,
+           gender == input$gender) %>% 
+    data.table::data.table()
+  
+})
+
+```
+
+
+
+
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- CSS - Control colors / style -->
+
+<style>                     
+.navbar-inverse {
+    background-color: #ffffff; /******** navbar background color*/
+        border-color: #282828; /******** navbar border color*/
+}
+
+.navbar-inverse .navbar-brand {
+    color: #000000;
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color:  #0d0d0d;
+        background-color: transparent;
+}
+
+.navbar-inverse .navbar-text {
+    color: #777;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #777;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: #0d0d0d;
+        background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    color: #555;
+        background-color: #FFFFFF;   /********* tab background color*/
+}
+
+body {
+    padding-top: 60px;
+    background: #ffffff;  /********* body background color*/
+}
+
+.section.sidebar {
+    top: 51px;
+    
+/* background-color: #f5f5f5; */
+    background-color: #ffffff;  /********* sidebar background color*/
+    border-color: transparent;  
+}
+
+.value-box {
+    color: #ffffff;     /********* valuebox text color*/
+}
+
+.bg-primary {
+    background-color: #16314b; /********* valuebox background color*/
+}
+
+</style>
+    
