@@ -1,0 +1,309 @@
+---
+title: "R Basics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# If you have not done the prep work please run the following line of code. 
+# install.packages("readxl","tidyverse","DT","plotly","shiny","knitr","flexdashboard")
+
+
+```
+
+## Introduction to R for Flexdashboard
+
+Overview of R for ISOQOL workshop for visualizing data. 
+
+## R is a calculator 
+
+R works like a calculator and uses order of operations. For example in the third line of code in the chunck below you will not get the same result as the forth line.  
+
+```{r}
+1+1
+74*80
+4*(3+1)
+4*3+1
+```
+
+__Exercise 1:__ 
+
+Create a new chuck of R code to solve the following:    
+1. Solve (75-54)*2   
+2. What is 385 divided by 3?    
+3. What is 45 squared?    
+
+## Assigning elements. 
+
+To call upon objects in R we assign them elements so we don't have to repeat things. We assign elements with the "<-" symbol or the "=" sign. 
+
+```{r}
+a <- 2
+b <- 1
+a+b
+a*b
+```
+
+R is case sensitive. Let's do an excerise together create a new element "A" with an upper case to the number 3. Notice in your environment you will have two objects. 
+
+### Types of Elements
+
+The elements we used above are numbers but not everything we do uses numbers so elements can be strings, dates or T/F (boolean). All strings are read as text and wrapped in quotes "" or ''. Please notice that R will not let you do operations on non-numeric elements. (you can not add a and d)
+
+```{r}
+c <- T
+d <- "Hello programmers"
+```
+
+
+### Vectors
+
+Vectors are a collection of elements. To create a vector we use the letter c and wrap all elements in parenthesis and separate each item by a comma. All elements can be of different types. I like to think the c stands for collection.
+
+```{r}
+v <- c(1,5,10)
+z <- c(0,T,"Hey")
+```
+
+Vector "v" has three elements all numbers and "z" has three elements all different types. 
+
+## Functions
+
+Functions are actions we perform on elements (or a collection of elements) through arguments. Arguments are what you give the function to do its job. Please note that all functions use parentheses to collect the arguments.  
+
+```{r}
+# The "sum()" function takes a vector of numbers and adds them together. 
+
+sum(v) 
+
+# Here's another function "log()". 
+
+log(v)
+# This is an example of a function that can also just take a single number
+log(a)
+
+# You can also perform multiple functions at once by "nesting" them 
+
+sum(log(v))
+
+```
+
+There are lot's of options within RStudio and RStudio Cloud to find help. RStudio Cloud has a bar on the left side with the learning options; including cheat sheets, guides, etc. The "Help" tab in the lower right square allows you to search functions and find documentation on how to use them. Let's search the R Function "sum". Notice there is an argument called "na.rm" which removes all NA objects from your vector. Let's use this below. 
+
+```{r}
+v <- c(1,5,10,NA)
+
+sum(v,na.rm=T)
+sum(v)
+```
+
+Notice that not including the second argument you do not get a number you get NA. 
+
+__Exercise 2:__ Find a function we haven't used yet using any of the following resources and apply it to the vector "v". 
+
+## Reading in data
+
+There are special functions that allow you to read in the data. Packages are a collection of functions. To use a function within a package you will first need to install the package with the code "install.packages('packagename')". Notice we did this in the prep work. Installing a package only needs to be done once. To call upon that package in your environment you need to use 
+
+```{r}
+library(readxl)
+```
+
+You will be able to see the packages in your environment in the "Packages" tab of the lower right square of RStudio. Packages will not show up into this the list until you download them. You can also view all of the functions within the package by clicking on the package. 
+
+Let's use the read_xlsx function to read in some example data that we will use for the rest of the presentation and to create a dashboard. There are many different ways to read in data each tailored to the format of your data. For exmaple read.csv or read_xlsx. 
+
+```{r}
+# The first arguement to the read_xlsx function the path to where that data lives. 
+data <- read_xlsx("/projects/bsi/az/projects/radonc/vizlab/s305577_isoqol2022_workshop/data/isoqol_data.xlsx")
+
+# To find the file path to where your data lives you can also use the Files tab in the lower right corner of RStudio
+```
+
+
+### Viewing a dataset 
+
+We can see our data is now in our environment and we can view the data by clicking on the dataset in our environment or using the code below. 
+
+```{r}
+#View(data)
+
+#To print a single column within our data set we use the $ sign
+data$age
+```
+
+
+### Summarizing a databaset
+
+```{r}
+# We can use the summary function 
+summary(data)
+summary(data$age)
+
+# The names function gives us all of the variable names within our data set. 
+names(data)
+```
+
+
+Let's try a few new functions 
+
+```{r}
+# The mean function takes the mean or average age within the data set
+mean(data$age)
+
+# The median function takes the median or 50% percentile within the weight
+median(data$wt)
+```
+
+__Exercise 3:__    
+1. Try a function we have already used on the height column within our data set. Hint our height variable is "ht".      
+2. What function would we use if we wanted to know the counts of the arm variable? Find the counts.     
+
+### Subset a database 
+
+To subset the data we are going to learn about some functions within the tidyverse. To call on the tidyverse we must use the code below. 
+
+```{r}
+library(tidyverse)
+```
+
+The tidyverse uses a very special function called the pipe %>% which allows you to easily string together multiple functions in a way that you can read the code like a sentence. 
+
+Let's subset rows with the filter function 
+```{r}
+arm1 <- data %>% filter(arm=="A: IFL") # This will filter to just the patients within the first arm. 
+```
+
+__Excerise 4:__    
+1. Filter to the cases that are above 6 feet. Hint our height column is in cm. 6 feet is approximately 183 centimeters.     
+2. Who is the tallest patient in the dataset? 
+
+
+Let's subset the data by columns now using the select function. 
+
+```{r}
+# Select just the survey data
+ex1 <- data %>% 
+  select(
+    case,pro1_bsl:pro3_mo6
+  )
+```
+
+### Counts
+
+A common question that is asked by clinicians is how many unique patients are we including. This is important to ensure that patients are duplicated. To do that we can use the "case" variable that has all of the patient ids and use the "length" and "unique" functions. 
+
+```{r}
+length(unique(data$case))
+```
+
+Notice that the number of unique patients matches the number of rows in our dataset. 
+
+### Create new variables
+
+We will create new variables with the mutate function and the case_when function within mutate to group our variable. 
+
+Let's create a new age variable that is grouped. 
+
+```{r}
+data <- data %>% 
+  mutate(
+    # case_when is a function that allows you to group the variable 
+    age_group = case_when(
+      age<=50  ~ "<=50",
+      age>50 & age<=60  ~ "51-60",
+      age>60 & age<=70  ~ "61-70",
+      age>70  ~ "70+",
+      TRUE ~ NA_character_
+    )
+  )
+```
+
+
+__Exercise 5:__     
+1. Create a BMI variable in the data set.
+The weight is measured in kilograms and height is measured in centimeters. Here is the formula BMI= (weight*10000)/(height^2)
+
+### Datatable 
+
+The datatable function within the DT package allows us to view and interact with our data easily. 
+
+```{r}
+library(DT)
+datatable(data)
+```
+This will print the datatable in the Viewer tab in the lower right corner if run in the console. It will also allow you to filter/search the data. 
+
+# Plots 
+## Base R 
+### Histogram 
+
+The hist function will create a histogram of a numeric vector. If run in the console it can be viewed within the Plot tab of the lower right hand corner. 
+
+```{r}
+hist(data$ht)
+#hist(data$bmi)
+```
+
+### Boxplot 
+"boxplot" is a function that create a box plot. 
+```{r}
+boxplot(data$age)
+boxplot(age ~ arm, data = data)
+```
+
+Notice in the second example we create a boxplot of age with respect to arm. Giving the function y ~ x where age is on the y axis and arm on the x axis. 
+
+## ggplot 
+
+Uses layers and you can string functions together with a "+" sign. The first argument within ggplot is the data and the second is the aesthetics or aes where you will define what your x and y category is and the fill color. 
+
+```{r}
+p<-ggplot(data, aes(x=arm, y=age,fill=arm)) +
+  geom_boxplot()
+p <- p + theme_bw() + ylab("Age at Enrollment (yrs)") 
+p
+```
+
+"theme_bw()" makes the back ground white and changes the grid lines to black with just a single function. "ylab" changes the y-axis lable. 
+
+__Exercise 6:__ How would we change the label of the x-axis? 
+
+Let's change the colors of our plot. 
+```{r}
+p<-ggplot(data, aes(x=arm, y=age,fill=arm)) +
+  geom_boxplot() + theme_bw() + ylab("Age at Enrollment") + 
+  xlab("Arm") + scale_fill_manual(values=c("red", "blue","green"))
+p
+```
+
+Above I used base R colors that are rapped in quotes. For the full list of all possible base R colors here is a link to a list. 
+[Base R Colors](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+You can also you all the colors in the rainbow using HTML color hex codes from the link below.
+[HTML Colors](https://htmlcolorcodes.com/)
+
+__Exercise 7:__ Change the colors of the plot above.
+
+
+## plotly 
+
+"plotly" is a function that makes your graphs interact-able and gives hover options. 
+
+```{r}
+library(plotly)
+ggplotly(p)
+```
+
+
+
+These packages will help us make our example dashboard. Let's read these packages into our environment to create our example. 
+
+```{r}
+library(shiny)
+library(knitr)
+library(flexdashboard)
+```
+
+
