@@ -36,11 +36,34 @@ Beginner to intermediate. This workshop does not require any prior knowledge of 
 
 ## Prework
 
-You will need to... :
-- 
+Please bring a laptop with wifi access and your charging cable. Please use the link below to create an account on RStudio Cloud.  You will need your email address, name, and a new password to create your account.  https://rstudio.cloud/ After creating your account please create a project to save your work from the workshop and run the line of code below in the console. 
+install.packages(c(“tidyverse”,””))
+In case the wifi at the conference is not reliable please install the following software (all are free, be sure to use the correct platform for your computer type):
+•	A recent version of R (>=4.0.0), which is available for free at cran.r-project.org. Please update your version of R if using a version before 4. 
+•	A recent version of RStudio Desktop (>=1.2.1500), available for free at www.rstudio.com/download (RStudio Desktop Open Source License)
+•	The R packages we will use, which you can install by connecting to the internet, opening RStudio, and running at the command line:
+install.packages(c(“tidyverse”,””))
+•	General advice on troubleshooting R: search with Google and on https://stackoverflow.com, see also https://github.community.
+Don’t forget your power cord!
+
 
 
 ## Schedule
+💻 01:00 – 02:00: Session 1 - Getting started with R
+•	00 - Welcome Getting started instructions + motivation
+o	00.5 – Prep work if not done previously
+•	01 – Getting started with R 
+☕ 02:00 - 02:10: Break #1
+💻 02:10 – 02:40: Session 2 - Putting the R in R Markdown
+•	02 - Putting the R in R Markdown
+•	03 - Flexdashboard
+🍴 02:40 - 02:50: Break #2
+💻 02:50 - 04:00: Session 3 – Creating your own dashboard
+•	04 – Create example dashboard
+o	Tables
+o	Graphs
+o	Tabs
+•	05 – Wrap-up 
 
 
 
