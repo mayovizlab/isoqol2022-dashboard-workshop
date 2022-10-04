@@ -60,21 +60,31 @@ __Don’t forget your power cord!__
 ## Schedule
 
 💻 01:00 – 02:20: Session 1 - Getting started with R
-<ul> <li> 00 - Welcome, getting started instructions & motivation </li> <li> 01 - Prep work if not done previously <li> <li> 02 - Getting started with R <li> </ul>
-      *	00 - Welcome Getting started instructions + motivation    
-         *	00.5 – Prep work if not done previously   
-      *	01 – Getting started with R     
-☕ 02:20 - 02:40: Break #1    
-💻 02:40 – 03:00: Session 2 - Putting the R in R Markdown    
-      *	02 - Putting the R in R Markdown    
-      *	03 - Flexdashboard     
-💻 03:00 - 04:00: Session 3 – Creating your own dashboard    
-      *	04 – Create example dashboard    
-         *	Tables    
-         *	Graphs    
-         *	Tabs    
-      *	05 – Wrap-up    
-
+<ul> 
+  <li>00 - Welcome, getting started instructions & motivation</li>
+  <li>01 - Prep work if not done previously</li>
+  <li>02 - Getting started with R</li> 
+</ul> 
+<br /> 
+☕ 02:20 - 02:40: Break #1  
+<br /> 
+💻 02:40 – 03:00: Session 2 - Putting the R in R Markdown   
+<ul> 
+  <li>03 - Putting the R in R Markdown</li>
+  <li>04 - Flexdashboard</li>
+</ul> 
+<br />    
+💻 03:00 - 04:00: Session 3 – Creating your own dashboard
+<ul> 
+  <li>05 - Create example dashboard</li>
+  <ul>
+    <li>Tables</li>
+    <li>Graphs</li>
+    <li>Tabs</li>
+  </ul>
+  <li>06 - Wrap-up</li>
+</ul> 
+<br />
 
 
 ## Instructors
