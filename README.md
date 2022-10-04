@@ -36,34 +36,42 @@ Beginner to intermediate. This workshop does not require any prior knowledge of 
 
 ## Prework
 
-Please bring a laptop with wifi access and your charging cable. Please use the link below to create an account on RStudio Cloud.  You will need your email address, name, and a new password to create your account.  https://rstudio.cloud/ After creating your account please create a project to save your work from the workshop and run the line of code below in the console.     
-install.packages(c(“tidyverse”,””))     
-In case the wifi at the conference is not reliable please install the following software (all are free, be sure to use the correct platform for your computer type):    
+Please bring a laptop with wifi access and your charging cable. All workshop materials are hosted on the following website: https://github.com/mayovislab/isoqool2022-dashboard-workshop . Please use the link below to create an account on RStudio Cloud.  You will need your email address, name, and a new password to create your account.  https://rstudio.cloud/ 
+
+After creating your account please create a project to save your work from the workshop  from a Git Repository. See the screenshot below. 
+![image](https://user-images.githubusercontent.com/107272074/193859900-dba64bbf-df73-4d4d-8c06-fd7eb6ce594b.png)
+
+After clicking "New Project from Git Repository" under the "New Project" drop down please enter the URL below into the prompt. 
+https://github.com/mayovislab/isoqool2022-dashboard-workshop
+![image](https://user-images.githubusercontent.com/107272074/193860159-f3e067f5-2ea4-45d9-acc9-7c8875aef4b7.png)
+
+And click okay to download the project. This will create a project with all the material we will use during the workshop pre-loaded for you. 
+
+Optional: In case the wifi at the conference is not reliable please install the following software (all are free, be sure to use the correct platform for your computer type):    
 •	A recent version of R (>=4.0.0), which is available for free at cran.r-project.org. Please update your version of R if using a version before 4.     
 •	A recent version of RStudio Desktop (>=1.2.1500), available for free at www.rstudio.com/download (RStudio Desktop Open Source License)   
-•	The R packages we will use, which you can install by connecting to the internet, opening RStudio, and running at the command line:    
-install.packages(c(“tidyverse”,””))    
+•	Github available for free. Github for windows: https://gitforwindows.org/ for all other users: https://git-scm.com/downloads  
 •	General advice on troubleshooting R: search with Google and on https://stackoverflow.com, see also https://github.community.   
-Don’t forget your power cord!
+
+__Don’t forget your power cord!__
 
 
 
 ## Schedule
-💻 01:00 – 02:00: Session 1 - Getting started with R    
-     •	00 - Welcome Getting started instructions + motivation    
-         o	00.5 – Prep work if not done previously   
-     •	01 – Getting started with R     
-☕ 02:00 - 02:10: Break #1    
-💻 02:10 – 02:40: Session 2 - Putting the R in R Markdown    
-     •	02 - Putting the R in R Markdown    
-     •	03 - Flexdashboard    
-🍴 02:40 - 02:50: Break #2    
-💻 02:50 - 04:00: Session 3 – Creating your own dashboard    
-     •	04 – Create example dashboard    
-         o	Tables    
-         o	Graphs    
-         o	Tabs    
-•	05 – Wrap-up    
+💻 01:00 – 02:20: Session 1 - Getting started with R    
+     *	00 - Welcome Getting started instructions + motivation    
+         +	00.5 – Prep work if not done previously   
+     *	01 – Getting started with R     
+☕ 02:20 - 02:40: Break #1    
+💻 02:40 – 03:00: Session 2 - Putting the R in R Markdown    
+     *	02 - Putting the R in R Markdown    
+     *	03 - Flexdashboard     
+💻 03:00 - 04:00: Session 3 – Creating your own dashboard    
+     *	04 – Create example dashboard    
+         +	Tables    
+         +	Graphs    
+         +	Tabs    
+     *	05 – Wrap-up    
 
 
 
@@ -71,6 +79,6 @@ Don’t forget your power cord!
 
 __Instructors: Michael Golafshar, Molly Voss and Todd DeWees__
 
-All presenters are experienced researchers in the division of Biostatistics and Informatics at Mayo Clinic - Arizona.  Michael Golafshar, MS innovated the combination and utilization of these disparate free-ware programming packages to create awe-inspiring interactive dashboards that have gained widespread attention across the Mayo Enterprise.  Molly Petersen has extensive experience in programming and statistics, creating her own R packages and working on highly successful clinical research such as the Mayo developed Cologuard®.  Todd DeWees, PhD has been a cancer researcher for over a decade with publications in biological, physics, and clinical research.  His current research interests in PROs has guided the clinical use of dashboards as well as the development and inclusion of novel utilization of neural networks (Artificial Intelligence) to predict changes in patient reported outcomes.  All the organizers have a deep understanding and years of applied experience in R and dashboard creation for clinical trials. 
+All presenters are experienced researchers in the division of Biostatistics and Informatics at Mayo Clinic - Arizona.  Michael Golafshar, MS innovated the combination and utilization of these disparate free-ware programming packages to create awe-inspiring interactive dashboards that have gained widespread attention across the Mayo Enterprise.  Molly Voss has extensive experience in programming and statistics, creating her own R packages and working on highly successful clinical research such as the Mayo developed Cologuard®.  Todd DeWees, PhD has been a cancer researcher for over a decade with publications in biological, physics, and clinical research.  His current research interests in PROs has guided the clinical use of dashboards as well as the development and inclusion of novel utilization of neural networks (Artificial Intelligence) to predict changes in patient reported outcomes.  All the organizers have a deep understanding and years of applied experience in R and dashboard creation for clinical trials. 
 
 
