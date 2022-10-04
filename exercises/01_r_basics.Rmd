@@ -6,8 +6,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-# If you have not done the prep work please run the following line of code. 
-# install.packages("readxl","tidyverse","DT","plotly","shiny","knitr","flexdashboard")
+# Please run the following line of code to ensure you have all of the packages for workshop or use the yellow banner to download all necessary packages. 
+# install.packages("readxl","tidyverse","DT","plotly","shiny","knitr","flexdashboard","Rmarkdown")
 
 
 ```
@@ -45,7 +45,9 @@ a+b
 a*b
 ```
 
-R is case sensitive. Let's do an excerise together create a new element "A" with an upper case to the number 3. Notice in your environment you will have two objects. 
+R is case sensitive. 
+
+__Exercise 2:__ Let's do an excerise together create a new element "A" with an upper case to the number 3. Notice in your environment you will have two objects. 
 
 ### Types of Elements
 
@@ -93,14 +95,11 @@ There are lot's of options within RStudio and RStudio Cloud to find help. RStudi
 
 ```{r}
 v <- c(1,5,10,NA)
-
-sum(v,na.rm=T)
 sum(v)
+sum(v,na.rm=T)
 ```
 
 Notice that not including the second argument you do not get a number you get NA. 
-
-__Exercise 2:__ Find a function we haven't used yet using any of the following resources and apply it to the vector "v". 
 
 ## Reading in data
 
@@ -116,7 +115,7 @@ Let's use the read_xlsx function to read in some example data that we will use f
 
 ```{r}
 # The first arguement to the read_xlsx function the path to where that data lives. 
-data <- read_xlsx("/projects/bsi/az/projects/radonc/vizlab/s305577_isoqol2022_workshop/data/isoqol_data.xlsx")
+data <- read_xlsx("../data/isoqol_data.xlsx")
 
 # To find the file path to where your data lives you can also use the Files tab in the lower right corner of RStudio
 ```
@@ -172,7 +171,7 @@ The tidyverse uses a very special function called the pipe %>% which allows you 
 
 Let's subset rows with the filter function 
 ```{r}
-arm1 <- data %>% filter(arm=="A: IFL") # This will filter to just the patients within the first arm. 
+arm1 <- data %>% filter(arm=="A: IFL") # This will filter to just the patients within the first arm. Notice that we use double equals (==) within the filter one of the reasons we use <- instead of =. 
 ```
 
 __Excerise 4:__    
@@ -301,6 +300,7 @@ ggplotly(p)
 These packages will help us make our example dashboard. Let's read these packages into our environment to create our example. 
 
 ```{r}
+library(Rmarkdown)
 library(shiny)
 library(knitr)
 library(flexdashboard)
