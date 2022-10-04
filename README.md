@@ -67,7 +67,7 @@ __Don’t forget your power cord!__
   <li>01 - Prep work if not done previously</li>
   <li>02 - Getting started with R</li> 
 </ul> 
-☕ 02:20 - 02:40: Break        
+☕ 02:20 - 02:40: Break     
 💻 02:40 – 03:00: Session 2 - Putting the R in R Markdown   
 <ul> 
   <li>03 - Putting the R in R Markdown</li>
