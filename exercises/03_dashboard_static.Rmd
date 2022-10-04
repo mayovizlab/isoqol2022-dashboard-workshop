@@ -4,3 +4,105 @@ output:
   flexdashboard::flex_dashboard:
     orientation: rows
 ---
+
+```{r setup, include=FALSE, warning=FALSE}
+
+#------------------------------ Load Packages ----------------------------------------
+library(flexdashboard)
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+
+```
+
+```{r data, include=FALSE}
+
+#---------------------------------- Data Import ----------------------------------------
+data_import <- read_xlsx("../data/isoqol_data.xlsx")
+
+
+
+#---------------------------------- Data Transformations --------------------------------
+data <- data_import %>% 
+  mutate(tx_start_dt = as.Date(tx_start_dt),  # convert treatment start to date
+         tx_end_dt = as.Date(tx_end_dt))      # convert treatment end to date
+  
+# YOUR CODE HERE
+
+
+```
+
+
+Cohort
+================================================================================
+
+Row {data-height=200}
+--------------------------------------------------------------------------------
+### <strong>Overall Accrual</strong>
+
+```{r}
+#---- Enrollment counts for all arms
+n_distinct(data$case)  %>%              # Count the number of distinct IDs
+  cat()                   
+```
+
+### Arm 1  
+```{r, message=FALSE, echo=FALSE}
+#---- Arm 1 enrollment  
+
+data %>% filter(arm == "A: IFL") %>%      # filter for Arm 1 cases only
+  with(n_distinct(case)) %>%              # Count the number of distinct IDs
+  cat()
+```
+
+### Arm 2  
+```{r}
+#---- Arm 2 enrollment  
+data %>% filter(arm == "F: FOLFOX") %>%   # filter for Arm 2 cases only
+  with(n_distinct(case)) %>%              # Count the number of distinct IDs
+  cat()
+```
+
+### Arm 3  
+```{r}
+#---- Arm 3 enrollment  
+data %>% filter(arm == "G: IROX") %>%   # filter for Arm 2 cases only
+  with(n_distinct(case)) %>%            # Count the number of distinct IDs
+  cat()
+```
+
+
+Row {data-height=800}  
+--------------------------------------------------------------------------------
+
+### Enrollment by Sex {data-width="500"}
+
+```{r, echo=FALSE}
+ggplot(data, aes(x=sex)) + 
+  geom_bar(stat="count")
+```
+
+### Enrollment by Age {data-width="500"}
+
+```{r, echo=FALSE}
+hist(data$age)
+```
+
+
+Surveys  
+================================================================================
+
+Row
+--------------------------------------------------------------------------------
+### Survey Completion Table
+```{r, echo=FALSE}
+# Select the columns we want to show in our table
+survey_table <- data %>% select(case, arm, tx_start_dt, tx_end_dt, bsl, mo3, mo6)
+
+# print the table using the knitr and kableExtra packages
+survey_table %>%
+  kbl() %>%
+  kable_styling()
+
+```
