@@ -21,8 +21,8 @@ runtime: shiny
 #            - To access the gender filter value in this dashboard use input$gender
 #            - To use a Shiny input, you need to wrap it in a "render" call. (ex. renderTable({}))
 #
-# let me know if you have questions
-# -Mike G
+
+
 #---------------------------------- Packages ----------------------------------------
 library(flexdashboard)
 library(tidyverse)

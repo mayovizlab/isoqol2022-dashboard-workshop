@@ -5,6 +5,7 @@ output:
     orientation: rows
 ---
 
+
 ```{r setup, include=FALSE, warning=FALSE}
 
 #------------------------------ Load Packages ----------------------------------------
@@ -15,6 +16,7 @@ library(knitr)
 library(kableExtra)
 
 ```
+
 
 ```{r data, include=FALSE}
 
