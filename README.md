@@ -48,10 +48,12 @@ https://github.com/mayovislab/isoqool2022-dashboard-workshop
 And click okay to download the project. This will create a project with all the material we will use during the workshop pre-loaded for you. 
 
 Optional: In case the wifi at the conference is not reliable please install the following software (all are free, be sure to use the correct platform for your computer type):    
-    * A recent version of R (>=4.0.0), which is available for free at cran.r-project.org. Please update your version of R if using a version before 4.     
-    * A recent version of RStudio Desktop (>=1.2.1500), available for free at www.rstudio.com/download (RStudio Desktop Open Source License)   
-    * Github available for free. Github for windows: https://gitforwindows.org/ for all other users: https://git-scm.com/downloads  
-    * General advice on troubleshooting R: search with Google and on https://stackoverflow.com, see also https://github.community.   
+<ul>
+  <li>A recent version of R (>=4.0.0), which is available for free at cran.r-project.org. Please update your version of R if using a version before 4.</li>
+  <li>A recent version of RStudio Desktop (>=1.2.1500), available for free at www.rstudio.com/download (RStudio Desktop Open Source License) </li>
+  <li>Github available for free. Github for windows: https://gitforwindows.org/ for all other users: https://git-scm.com/downloads </li>
+  <li>General advice on troubleshooting R: search with Google and on https://stackoverflow.com, see also https://github.community. </li>
+ </ul> 
 
 __Don’t forget your power cord!__
 
@@ -65,15 +67,12 @@ __Don’t forget your power cord!__
   <li>01 - Prep work if not done previously</li>
   <li>02 - Getting started with R</li> 
 </ul> 
-<br /> 
 ☕ 02:20 - 02:40: Break #1  
-<br /> 
 💻 02:40 – 03:00: Session 2 - Putting the R in R Markdown   
 <ul> 
   <li>03 - Putting the R in R Markdown</li>
   <li>04 - Flexdashboard</li>
-</ul> 
-<br />    
+</ul>  
 💻 03:00 - 04:00: Session 3 – Creating your own dashboard
 <ul> 
   <li>05 - Create example dashboard</li>
@@ -84,7 +83,6 @@ __Don’t forget your power cord!__
   </ul>
   <li>06 - Wrap-up</li>
 </ul> 
-<br />
 
 
 ## Instructors
