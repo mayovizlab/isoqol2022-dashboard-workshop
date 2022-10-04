@@ -59,7 +59,8 @@ __Don’t forget your power cord!__
 
 ## Schedule
 
-💻 01:00 – 02:20: Session 1 - Getting started with R    
+💻 01:00 – 02:20: Session 1 - Getting started with R
+<ul> <li> 00 - Welcome, getting started instructions & motivation </li> <li> 01 - Prep work if not done previously <li> <li> 02 - Getting started with R <li> </ul>
       *	00 - Welcome Getting started instructions + motivation    
          *	00.5 – Prep work if not done previously   
       *	01 – Getting started with R     
