@@ -3,8 +3,8 @@ title: "Dashboard Project Name Here"
 output:
   flexdashboard::flex_dashboard:
     orientation: rows
+runtime: shiny
 ---
-
 
 ```{r setup, include=FALSE, warning=FALSE}
 
@@ -14,9 +14,10 @@ library(tidyverse)
 library(readxl)
 library(knitr)
 library(kableExtra)
+library(shiny)
+library(DT)
 
 ```
-
 
 ```{r data, include=FALSE}
 
@@ -35,48 +36,53 @@ data <- data_import %>%
 
 ```
 
+# Cohort
 
-Cohort
-================================================================================
+## Row {data-height="200"}
 
-Row {data-height=200}
---------------------------------------------------------------------------------
-### <strong>Overall Accrual</strong>
+### __Overall Accrual__
 
 ```{r}
 #---- Enrollment counts for all arms
-n_distinct(data$case)  %>%              # Count the number of distinct IDs
-  cat()                   
+
+ # Count the number of distinct IDs
+overall_n <- n_distinct(data$case)  %>%  cat()                   
+
 ```
 
-### Arm 1  
+### Arm 1
+
 ```{r, message=FALSE, echo=FALSE}
 #---- Arm 1 enrollment  
 
-data %>% filter(arm == "A: IFL") %>%      # filter for Arm 1 cases only
-  with(n_distinct(case)) %>%              # Count the number of distinct IDs
-  cat()
+# filter for Arm 1 cases only
+# Count the number of distinct IDs
+arm1_n <- data %>% filter(arm == "A: IFL") %>% with(n_distinct(case)) %>% cat()
+
 ```
 
-### Arm 2  
+### Arm 2
+
 ```{r}
 #---- Arm 2 enrollment  
-data %>% filter(arm == "F: FOLFOX") %>%   # filter for Arm 2 cases only
-  with(n_distinct(case)) %>%              # Count the number of distinct IDs
-  cat()
+
+# filter for Arm 2 cases only
+# Count the number of distinct IDs
+arm2_n <- data %>% filter(arm == "F: FOLFOX") %>% with(n_distinct(case)) %>% cat()
+
 ```
 
-### Arm 3  
+### Arm 3
 ```{r}
-#---- Arm 3 enrollment  
-data %>% filter(arm == "G: IROX") %>%   # filter for Arm 2 cases only
-  with(n_distinct(case)) %>%            # Count the number of distinct IDs
-  cat()
+#---- Arm 3 enrollment
+
+# filter for Arm 3 cases only
+# Count the number of distinct IDs
+arm3_n <- data %>% filter(arm == "G: IROX") %>% with(n_distinct(case)) %>% cat()
+
 ```
 
-
-Row {data-height=800}  
---------------------------------------------------------------------------------
+## Row {data-height="800"}
 
 ### Enrollment by Sex {data-width="500"}
 
@@ -88,23 +94,23 @@ ggplot(data, aes(x=sex)) +
 ### Enrollment by Age {data-width="500"}
 
 ```{r, echo=FALSE}
-hist(data$age)
+ggplot(data, aes(x=arm, y=age,fill=arm)) +
+  geom_boxplot() + 
+  theme_bw() + 
+  ylab("Age at Enrollment (yrs)") 
 ```
 
+# Surveys
 
-Surveys  
-================================================================================
+## Row
 
-Row
---------------------------------------------------------------------------------
 ### Survey Completion Table
+
 ```{r, echo=FALSE}
+#------- Survey Completion  
 # Select the columns we want to show in our table
 survey_table <- data %>% select(case, arm, tx_start_dt, tx_end_dt, bsl, mo3, mo6)
-
-# print the table using the knitr and kableExtra packages
-survey_table %>%
-  kbl() %>%
-  kable_styling()
-
+datatable(survey_table)
 ```
+
+
