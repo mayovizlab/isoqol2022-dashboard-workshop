@@ -1,0 +1,33 @@
+---
+title: "" 
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+
+About  
+========
+
+Row  {data-height=20}
+--------
+
+### Section 1  
+
+### Section 2  
+
+### Section 3  
+
+### Section 4  
+
+
+Row    {data-height=80}
+--------
+### Section 1   {data-width=25}
+
+### Section 2   {data-width=75}
+
+
+Demographics  
+==============
+
