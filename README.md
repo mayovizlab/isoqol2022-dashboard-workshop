@@ -67,9 +67,9 @@ __Don’t forget your power cord!__
   <li>01 - Prep work if not done previously</li>
   <li>02 - Getting started with R</li> 
 </ul> 
-☕ 02:20 - 02:40: Break  
+☕ 02:20 - 02:30: Break  
      
-💻 02:40 – 03:00: Session 2 - Putting the R in R Markdown   
+💻 02:30 – 03:00: Session 2 - Putting the R in R Markdown   
 <ul> 
   <li>03 - Putting the R in R Markdown</li>
   <li>04 - Flexdashboard</li>
@@ -90,6 +90,6 @@ __Don’t forget your power cord!__
 
 __Instructors: Michael Golafshar, Molly Voss and Todd DeWees__
 
-All presenters are experienced researchers in the division of Biostatistics and Informatics at Mayo Clinic - Arizona.  Michael Golafshar, MS innovated the combination and utilization of these disparate free-ware programming packages to create awe-inspiring interactive dashboards that have gained widespread attention across the Mayo Enterprise.  Molly Voss has extensive experience in programming and statistics, working on many Radiation Oncology clinical trials and publications.  Todd DeWees, PhD has been a cancer researcher for over a decade with publications in biological, physics, and clinical research.  His current research interests in PROs has guided the clinical use of dashboards as well as the development and inclusion of novel utilization of neural networks (Artificial Intelligence) to predict changes in patient reported outcomes.  All the organizers have a deep understanding and years of applied experience in R and dashboard creation for clinical trials. 
+All presenters are experienced researchers in the division of Biostatistics and Informatics at Mayo Clinic - Arizona.  Michael Golafshar, MS innovated the combination and utilization of these disparate free-ware programming packages to create awe-inspiring interactive dashboards that have gained widespread attention across the Mayo Enterprise.  Molly Voss has extensive experience in programming and statistics, working on many Radiation Oncology clinical trials and publications. Molly has also created many customized reactive dashboards for the Visualization Lab. Todd DeWees, PhD has been a cancer researcher for over a decade with publications in biological, physics, and clinical research.  His current research interests in PROs has guided the clinical use of dashboards as well as the development and inclusion of novel utilization of neural networks (Artificial Intelligence) to predict changes in patient reported outcomes.  All the organizers have a deep understanding and years of applied experience in R and dashboard creation for clinical trials. 
 
 
