@@ -36,7 +36,7 @@ Beginner to intermediate. This workshop does not require any prior knowledge of 
 
 ## Prework
 
-Please bring a laptop with wifi access and your charging cable. All workshop materials are hosted on the following website: https://github.com/mayovislab/isoqool2022-dashboard-workshop . Please use the link below to create an account on RStudio Cloud.  You will need your email address, name, and a new password to create your account.  https://rstudio.cloud/ 
+Please bring a laptop with wifi access and your charging cable. All workshop materials are hosted on the following website: https://github.com/mayovizlab/isoqool2022-dashboard-workshop . Please use the link below to create an account on RStudio Cloud.  You will need your email address, name, and a new password to create your account.  https://rstudio.cloud/ 
 
 After creating your account please create a project to save your work from the workshop  from a Git Repository. See the screenshot below. 
 ![image](https://user-images.githubusercontent.com/107272074/193859900-dba64bbf-df73-4d4d-8c06-fd7eb6ce594b.png)
