@@ -188,7 +188,15 @@ Row  {data-height="800"}
 #------- Survey Completion  
 # Select the columns we want to show in our table
 survey_table <- data %>% select(case, arm, tx_start_dt, tx_end_dt, bsl, mo3, mo6)
-datatable(survey_table)
+datatable(survey_table,
+          # Give the table nice column names
+          colnames = c("Case" = "case",
+                       "Treatment Arm" = "arm",
+                       "Treatment Start" = "tx_start_dt",
+                       "Treatment End" = "tx_end_dt",
+                       "Baseline Survey" = "bsl",
+                       "Month 3" = "mo3",
+                       "Month 6" = "mo6"))
 ```
 
 
