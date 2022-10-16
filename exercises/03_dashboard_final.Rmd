@@ -3,7 +3,6 @@ title: "Dashboard Project Name Here"
 output:
   flexdashboard::flex_dashboard:
     orientation: rows
-runtime: shiny
 ---
 
 ```{r setup, include=FALSE, warning=FALSE}
@@ -18,6 +17,7 @@ library(shiny)
 library(DT)
 
 ```
+
 
 ```{r data, include=FALSE}
 
@@ -36,9 +36,11 @@ data <- data_import %>%
 
 ```
 
-# Cohort
+Cohort
+======================================================================
 
-## Row {data-height="200"}
+Row  {data-height="200"}
+-----------------------------------------------------------------------  
 
 ### __Overall Accrual__
 
@@ -101,16 +103,17 @@ valueBox(value = arm3_n,
 
 ```
 
-## Row {data-height="800"}
+Row {data-height="800"}
+-----------------------------------------------------------------------  
 
-### Enrollment by Sex {data-width="500"}
+### Enrollment by Sex {data-width="400"}
 
 ```{r, echo=FALSE}
 ggplot(data, aes(x=sex)) + 
   geom_bar(stat="count")
 ```
 
-### Enrollment by Age {data-width="500"}
+### Enrollment by Age {data-width="600"}
 
 ```{r, echo=FALSE}
 ggplot(data, aes(x=arm, y=age,fill=arm)) +
@@ -119,9 +122,65 @@ ggplot(data, aes(x=arm, y=age,fill=arm)) +
   ylab("Age at Enrollment (yrs)") 
 ```
 
-# Surveys
+Surveys  
+======================================================================
 
-## Row
+Row  {data-height="200"}
+-----------------------------------------------------------------------  
+
+### __Baseline Completion__
+```{r}
+ # Count the number of distinct IDs
+baseline <- data %>% filter(bsl == "Complete")          
+baseline_n <- length(unique(baseline$case))
+
+gauge(value = baseline_n,
+      min = 0, 
+      max = length(unique(data$case)), 
+      label = "Baseline Survey",
+      gaugeSectors(success = c(0, length(unique(data$case)))))
+
+```
+
+### __Month 3 Completion__
+```{r}
+#---- Baseline Completion
+
+ # Count the number of distinct IDs
+mo3 <- data %>% filter(mo3 == "Complete")               
+mo3_n <- length(unique(mo3$case))
+
+gauge(value = mo3_n,
+      min = 0, 
+      max = length(unique(data$case)), 
+      label = "Month 3",
+      gaugeSectors(success = c(60, length(unique(data$case))), 
+                   warning = c(40, 59), 
+                   danger = c(0, 39)))
+
+```
+
+### __Month 6 Completion__
+```{r}
+#---- Baseline Completion
+
+ # Count the number of distinct IDs
+mo6 <- data %>% filter(mo6 == "Complete")  %>% count(case)                
+mo6_n <- length(unique(mo6$case))
+gauge(value = mo6_n,
+      min = 0, 
+      max = length(unique(data$case)), 
+      label = "Month 6",
+      gaugeSectors(success = c(60, length(unique(data$case))), 
+                   warning = c(40, 59), 
+                   danger = c(0, 39)))
+
+```
+
+
+
+Row  {data-height="800"}  
+-----------------------------------------------------------------------  
 
 ### Survey Completion Table
 

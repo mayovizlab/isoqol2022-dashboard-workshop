@@ -11,200 +11,191 @@ runtime: shiny
 
 # Flexdashboard documentation--- https://rmarkdown.rstudio.com/flexdashboard/index.html
 
-#----------- A Few Notes
-#   - While everything can be included in this RMD, it's usually better to separate the data processing into its own script
-#   - This template is setup to include interactive Shiny elements
-#   - This template includes 2 tabs
-#            - 1) An about page for study description and links to key personnel (or anything else you like)
-#            - 2) A cohort page with place holder elements
-#   - There are a couple of examples of Shiny inputs. 
-#            - To access the gender filter value in this dashboard use input$gender
-#            - To use a Shiny input, you need to wrap it in a "render" call. (ex. renderTable({}))
-#
+# This template is setup to include interactive Shiny elements. Examples can be in the Shiny section at https://rmarkdown.rstudio.com/flexdashboard/shiny.html#using_shiny
 
 
-#---------------------------------- Packages ----------------------------------------
+
+#------------------------------ Load Packages ----------------------------------------
 library(flexdashboard)
 library(tidyverse)
-library(shiny)
+library(readxl)
 library(knitr)
+library(kableExtra)
+library(shiny)
+library(DT)
 
 ```
-
 
 
 ```{r data, include=FALSE}
 
 #---------------------------------- Data Import ----------------------------------------
+data_import <- read_xlsx("../data/isoqol_data.xlsx")
 
-#some fake data
-id <- c(1,2,3,4,5,6,7,8,9,10,11,12)
-gender <- c("Male", "Female", "Female", "Female", "Male", "Female", "Female", "Female", "Female", "Female", "Male", "Male")
-site <- c("ARZ", "ARZ", "RST", "ARZ", "ARZ", "FLA", "FLA", "ARZ", "RST", "ARZ", "ARZ", "FLA")
-mydata<- data.frame(id, gender, site)
-mydata$id <- as.character(mydata$id)
-#---------------------------------- Data Transformation --------------------------------
 
+
+#---------------------------------- Data Transformations --------------------------------
+data <- data_import %>% 
+  mutate(tx_start_dt = as.Date(tx_start_dt), 
+         tx_end_dt = as.Date(tx_end_dt),
+         enroll_dt = as.Date(enroll_dt))      
+  
+# YOUR CODE HERE
 
 
 ```
 
-
-
-Hi Mom  
-======================================================================
 
 About
 ======================================================================
     
     
-#### __Add Study Title Here__
-__________________________   
+#### __Add Study Title Here__  
 
 
 __Status__:	Activated   
-__First Enrollment Date:__ `r #add r code here` 
+__First Enrollment Date:__ 01/04/2022 
 
-__Projected Number of Patients__:	  
-__Current Accrual__: `r n_distinct(mydata$id)`
+__Projected Number of Patients__:	75  
+__Current Accrual__: `r n_distinct(data$case)`
 
 
 <hr>
     
 #### Purpose of Study     
-Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah  
+This is a great place to describe your study or copy and paste key information straight from the study protocol.
 
 
     
+
+Cohort  
+======================================================================  
+
+Inputs {.sidebar}   
+---------------------------------------   
  
-    
-Cohort
-======================================================================
-    
-    
-Inputs {.sidebar data-width=310}
----------------------------------------  
-<!-- <p style="font-size:70%; color:red;">Dashboard updated: `r format(Sys.time(), '%d %B %Y')`</p>   -->
-    
-__Dashboard last updated on... __   
-
 <hr>    
     
-__Filters__   
+__Use filters below to subset cohort__     
 ```{r}
 
 #---------------- Insert Shiny Filters ----------------------
-# examples can be in the Shiny section at https://rmarkdown.rstudio.com/flexdashboard/shiny.html#using_shiny
 
-# 2 examples
-
-# Site
-selectInput("site", 
-            label = "Mayo site",
+# Filter by Enrollment Site
+selectInput("enroll_site", 
+            label = "Enrollment site",
             choices = c("All","ARZ","RST","FLA"), 
             selected = "All")
 
-# Gender (without an "all" option)
-radioButtons("gender", 
-             label = "Gender", 
-             choices = c("Male", "Female"), 
-             selected = NULL,
-             inline = TRUE, 
-             width = NULL, 
-             choiceNames = NULL,
-             choiceValues = NULL)
+# Filter by Enrollment Date
 
-
+# Stor min and max dates as objects
+min_enroll <- min(data$enroll_dt)
+max_enroll <- max(data$enroll_dt)
+sliderInput(inputId = "enroll_date",
+            label = "Enrollment Date", 
+            min = min_enroll,
+            max = max_enroll,value = c(min_enroll, max_enroll))
 ```
 
-
-    
-Row  
+Row  {data-height="200"}  
 -----------------------------------------------------------------------  
-    
-### <strong>Overall Accrual</strong>
+
+### __Overall Accrual__
+
 ```{r}
-#########################################################################
-#### Gauges - Enrollment counts                                   #######
-#########################################################################
-# Enrollment counts for all sites
-renderGauge({
+#---- Enrollment counts for all arms
 
-  #filter using gender variable  
-  all_count <- if (input$site == "All") n_distinct(mydata$id[mydata$gender == input$gender]) 
-               else n_distinct(mydata$id[mydata$site == input$site & mydata$gender == input$gender])  
-  
-  gauge(all_count,  
-      min = 0, # min value on gauge
-      max = 10, # max value on gauge
-      abbreviate = FALSE, #Abbreviate large numbers for min, max, and value (e.g. 1234567 -> 1.23M)
-      sectors = gaugeSectors(success = c(0, 10), # set range and color update when in range
-                             colors = c("#373F51")))
-})
-```
+ # Count the number of distinct IDs
+overall_n <- n_distinct(data$case)                  
 
-### Arizona
-```{r}
-
-renderGauge({
-  
-  gauge(n_distinct(mydata$id[mydata$gender == input$gender & mydata$site == "ARZ"]), 
-      min = 0, 
-      max = 5, #target accrual for ARZ
-      abbreviate = FALSE,
-      sectors = gaugeSectors(success = c(0, 60),
-                             colors = c("#A9BCD0")))
-})
-```
-
-### Florida
-```{r}
-renderGauge({
-  
-  gauge(n_distinct(mydata$id[mydata$gender == input$gender & mydata$site == "FLA"]),
-      min = 0, 
-      max = 60, 
-      abbreviate = FALSE,
-      sectors = gaugeSectors(success = c(0, 60),
-                             colors = c("#A9BCD0")))
-})
-```
-
-### Rochester
-```{r}
-renderGauge(
-
-  gauge(n_distinct(mydata$id[mydata$gender == input$gender & mydata$site == "RST"]),
-      min = 0, 
-      max = 60, 
-      abbreviate = FALSE,
-      sectors = gaugeSectors(success = c(0, 60),
-                             colors = c("#A9BCD0")))
-)
-```
-
-### Bob
-```{r}
+valueBox(value = overall_n,
+         caption = "Overall Accrual", 
+         color = "blue")
 
 ```
 
-Row  
+### Arm 1
+
+```{r, message=FALSE, echo=FALSE}
+#---- Arm 1 enrollment  
+
+# filter for Arm 1 cases only
+# Count the number of distinct IDs
+arm1_n <- data %>% filter(arm == "A: IFL") %>% with(n_distinct(case))
+
+# Create Value box
+valueBox(value = arm1_n, 
+         caption = "Arm 1", 
+         color = "red")
+```
+
+### Arm 2
+
+```{r}
+#---- Arm 2 enrollment  
+
+# filter for Arm 2 cases only
+# Count the number of distinct IDs
+arm2_n <- data %>% filter(arm == "F: FOLFOX") %>% with(n_distinct(case))
+
+
+# Create Value box
+valueBox(value = arm2_n, 
+         caption = "Arm 2", 
+         color = "red")
+```
+
+### Arm 3
+
+```{r}
+#---- Arm 3 enrollment
+
+# filter for Arm 3 cases only
+# Count the number of distinct IDs
+arm3_n <- data %>% filter(arm == "G: IROX") %>% with(n_distinct(case))
+
+# Create Value box
+valueBox(value = arm3_n, 
+         caption = "Arm 3", 
+         color = "red")
+
+```
+
+
+Row {data-height="800"}
 -----------------------------------------------------------------------  
-    
-### Accrual Table {data-width=40}
+
+### Enrollment by Sex {data-width="400"}  
 ```{r, echo=FALSE}
-renderTable({
-  
-  select_site <- if (input$site == "All") c("ARZ", "FLA", "RST") else input$site
-  
-  mydata %>% 
-    filter(site %in% select_site,
-           gender == input$gender) %>% 
-    data.table::data.table()
-  
-})
-
+ggplot(data, aes(x=sex)) + 
+  geom_bar(stat="count")
 ```
+
+### Enrollment by Age {data-width="600"}  
+```{r, echo=FALSE}
+ggplot(data, aes(x=arm, y=age,fill=arm)) +
+  geom_boxplot() + 
+  theme_bw() + 
+  ylab("Age at Enrollment (yrs)") 
+```
+
+Surveys  
+======================================================================
+
+Row
+-----------------------------------------------------------------------  
+
+### Survey Completion Table
+
+```{r, echo=FALSE}
+#------- Survey Completion  
+# Select the columns we want to show in our table
+survey_table <- data %>% select(case, arm, tx_start_dt, tx_end_dt, bsl, mo3, mo6)
+datatable(survey_table)
+```
+
+
 
 
 
