@@ -27,11 +27,8 @@ data_import <- read_xlsx("../data/isoqol_data.xlsx")
 
 
 #---------------------------------- Data Transformations --------------------------------
-data <- data_import# %>% 
-  #mutate(tx_start_dt = as.Date(tx_start_dt),  # convert treatment start to date
-   #      tx_end_dt = as.Date(tx_end_dt))      # convert treatment end to date
-  
-# YOUR CODE HERE
+
+# Code for any additional transformations goes here
 
 
 ```

@@ -40,7 +40,7 @@ data <- data_import %>%
          tx_end_dt = as.Date(tx_end_dt),
          enroll_dt = as.Date(enroll_dt))      
   
-# YOUR CODE HERE
+# Additional code here
 
 
 ```
@@ -111,7 +111,7 @@ overall_n <- n_distinct(data$case)
 
 valueBox(value = overall_n,
          caption = "Overall Accrual", 
-         color = "blue")
+         color = "#004c6d")
 
 ```
 
@@ -126,8 +126,8 @@ arm1_n <- data %>% filter(arm == "A: IFL") %>% with(n_distinct(case))
 
 # Create Value box
 valueBox(value = arm1_n, 
-         caption = "Arm 1", 
-         color = "red")
+         caption = "A: IFL", 
+         color = "#9dc6e0")
 ```
 
 ### Arm 2
@@ -142,8 +142,8 @@ arm2_n <- data %>% filter(arm == "F: FOLFOX") %>% with(n_distinct(case))
 
 # Create Value box
 valueBox(value = arm2_n, 
-         caption = "Arm 2", 
-         color = "red")
+         caption = "F: FOLFOX", 
+         color = "#9dc6e0")
 ```
 
 ### Arm 3
@@ -157,8 +157,8 @@ arm3_n <- data %>% filter(arm == "G: IROX") %>% with(n_distinct(case))
 
 # Create Value box
 valueBox(value = arm3_n, 
-         caption = "Arm 3", 
-         color = "red")
+         caption = "G: IROX", 
+         color = "#9dc6e0")
 
 ```
 
@@ -169,7 +169,8 @@ Row {data-height="800"}
 ### Enrollment by Sex {data-width="400"}  
 ```{r, echo=FALSE}
 ggplot(data, aes(x=sex)) + 
-  geom_bar(stat="count")
+  geom_bar(stat="count") +
+  theme_minimal()
 ```
 
 ### Enrollment by Age {data-width="600"}  
