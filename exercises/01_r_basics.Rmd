@@ -47,7 +47,7 @@ a*b
 
 R is case sensitive.
 
-**Exercise 2:** Let's do an excerise together create a new element "A" with an upper case to the number 3. Notice in your environment you will have two objects.
+**Exercise 2:** Let's do an excerise together create a new object called "A" (with an upper case) and assign it the number 3. Notice in your environment you will have two objects.
 
 ### Types of Elements
 
