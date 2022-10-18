@@ -22,7 +22,7 @@ library(DT)
 ```{r data, include=FALSE}
 
 #---------------------------------- Data Import ----------------------------------------
-data_import <- read_xlsx("../data/isoqol_data.xlsx")
+data <- read_xlsx("../data/isoqol_data.xlsx")
 
 
 
@@ -97,9 +97,43 @@ ggplot(data, aes(x=arm, y=age,fill=arm)) +
   ylab("Age at Enrollment (yrs)") 
 ```
 
-# Surveys
+Surveys  
+======================================================================
 
-## Row
+Row  {data-height="200"}
+-----------------------------------------------------------------------  
+
+### __Baseline Completion__
+```{r}
+ # Count the number of distinct IDs
+baseline <- data %>% filter(bsl == "Complete")          
+baseline_n <- length(unique(baseline$case))
+
+baseline_n
+
+```
+
+### __Month 3 Completion__
+```{r}
+ # Count the number of distinct IDs
+mo3 <- data %>% filter(mo3 == "Complete")               
+mo3_n <- length(unique(mo3$case))
+
+mo3_n
+```
+
+### __Month 6 Completion__
+```{r}
+ # Count the number of distinct IDs
+mo6 <- data %>% filter(mo6 == "Complete")  %>% count(case)                
+mo6_n <- length(unique(mo6$case))
+
+mo6_n
+```
+
+
+Row  {data-height="800"}  
+-----------------------------------------------------------------------  
 
 ### Survey Completion Table
 

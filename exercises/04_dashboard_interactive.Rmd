@@ -169,7 +169,7 @@ Row {data-height="800"}
 ### Enrollment by Sex {data-width="400"}  
 ```{r, echo=FALSE}
 ggplot(data, aes(x=sex)) + 
-  geom_bar(stat="count") +
+  geom_bar(stat="count",fill="#a4b1bd") +
   theme_minimal()
 ```
 
@@ -177,6 +177,7 @@ ggplot(data, aes(x=sex)) +
 ```{r, echo=FALSE}
 ggplot(data, aes(x=arm, y=age,fill=arm)) +
   geom_boxplot() + 
+  scale_fill_manual(values = c("#003f5c","#bc5090","#ffa600")) +
   theme_bw() + 
   ylab("Age at Enrollment (yrs)") 
 ```

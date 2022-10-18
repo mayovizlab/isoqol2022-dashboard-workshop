@@ -144,8 +144,6 @@ gauge(value = baseline_n,
 
 ### __Month 3 Completion__
 ```{r}
-#---- Baseline Completion
-
  # Count the number of distinct IDs
 mo3 <- data %>% filter(mo3 == "Complete")               
 mo3_n <- length(unique(mo3$case))
@@ -162,8 +160,6 @@ gauge(value = mo3_n,
 
 ### __Month 6 Completion__
 ```{r}
-#---- Baseline Completion
-
  # Count the number of distinct IDs
 mo6 <- data %>% filter(mo6 == "Complete")  %>% count(case)                
 mo6_n <- length(unique(mo6$case))
