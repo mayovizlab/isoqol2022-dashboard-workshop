@@ -25,6 +25,14 @@ R works like a calculator and uses order of operations. For example in the third
 74*80
 4*(3+1)
 4*3+1
+
+# Exercise 1.1 (type you code on the next line)
+
+# Exercise 1.2
+
+# Exercise 1.3
+
+
 ```
 
 **Exercise 1:**
@@ -43,6 +51,10 @@ a <- 2
 b <- 1
 a+b
 a*b
+
+# Exercise 2
+
+
 ```
 
 R is case sensitive.
@@ -75,18 +87,18 @@ Functions are actions we perform on elements (or a collection of elements) throu
 
 ```{r}
 # The "sum()" function takes a vector of numbers and adds them together. 
-
 sum(v) 
 
 # Here's another function "log()". 
-
 log(v)
+
 # This is an example of a function that can also just take a single number
 log(a)
 
 # You can also perform multiple functions at once by "nesting" them 
-
 sum(log(v))
+
+# Try adding another function here
 
 ```
 
@@ -149,17 +161,24 @@ mean(data$age)
 
 # The median function takes the median or 50% percentile within the weight
 median(data$wt)
+
+# Exercise 3.1
+
+
+# Exercise 3.2
+
+
 ```
 
 **Exercise 3:**\
 1. Try a function we have already used on the height column within our data set. Hint our height variable is "ht".\
-2. What function would we use if we wanted to know the counts of the arm variable? Find the counts.
+2. What does the *table* function do? Try using it on a non-numeric column.
 
 ### Subset a database
 
 To subset the data we are going to learn about some functions within the tidyverse. To call on the tidyverse we must use the code below.
 
-```{r}
+```{r, echo=FALSE}
 library(tidyverse)
 ```
 
@@ -168,7 +187,14 @@ The tidyverse uses a very special function called the pipe %\>% which allows you
 Let's subset rows with the filter function
 
 ```{r}
-arm1 <- data %>% filter(arm=="A: IFL") # This will filter to just the patients within the first arm. Notice that we use double equals (==) within the filter one of the reasons we use <- instead of =. 
+arm1 <- data %>% filter(arm=="A: IFL") 
+# This will filter to just the patients within the first arm. Notice that we use double equals (==) within the filter one of the reasons we use <- instead of =. 
+
+# Exercise 4.1
+
+# Exercise 4.2
+
+
 ```
 
 **Excerise 4:**\
@@ -187,7 +213,7 @@ ex1 <- data %>%
 
 ### Counts
 
-A common question that is asked by clinicians is how many unique patients are we including. This is important to ensure that patients are duplicated. To do that we can use the "case" variable that has all of the patient ids and use the "length" and "unique" functions.
+A common question that is asked by clinicians is how many unique patients are we including. This is important to ensure that patients are not duplicated. To do that we can use the "case" variable that has all of the patient ids and use the "length" and "unique" functions.
 
 ```{r}
 length(unique(data$case))
@@ -206,13 +232,16 @@ data <- data %>%
   mutate(
     # case_when is a function that allows you to group the variable 
     age_group = case_when(
-      age<=50  ~ "<=50",
+      age<=50  ~ "≤50",
       age>50 & age<=60  ~ "51-60",
       age>60 & age<=70  ~ "61-70",
       age>70  ~ "70+",
       TRUE ~ NA_character_
     )
   )
+
+# Exercise 5  
+
 ```
 
 **Exercise 5:**\
@@ -258,10 +287,15 @@ Notice in the second example we create a boxplot of age with respect to arm. Giv
 Uses layers and you can string functions together with a "+" sign. The first argument within ggplot is the data and the second is the aesthetics or aes where you will define what your x and y category is and the fill color.
 
 ```{r}
-p<-ggplot(data, aes(x=arm, y=age,fill=arm)) +
-  geom_boxplot()
-p <- p + theme_bw() + ylab("Age at Enrollment (yrs)") 
+p <- ggplot(data, aes(x=arm, y=age, fill=arm)) +
+  geom_boxplot() + 
+  theme_bw() + 
+  ylab("Age at Enrollment (yrs)") 
 p
+
+# Exercise 6
+
+
 ```
 
 "theme_bw()" makes the back ground white and changes the grid lines to black with just a single function. "ylab" changes the y-axis lable.
@@ -271,13 +305,16 @@ p
 Let's change the colors of our plot.
 
 ```{r}
-p<-ggplot(data, aes(x=arm, y=age,fill=arm)) +
+p <- ggplot(data, aes(x=arm, y=age,fill=arm)) +
   geom_boxplot() + theme_bw() + ylab("Age at Enrollment") + 
-  xlab("Arm") + scale_fill_manual(values=c("red", "blue","green"))
+  xlab("Arm") + scale_fill_manual(values=c("dimgray", "darkorange","lightblue"))
 p
+
+# Exercise 7 -- Change the colors in the plot above
+
 ```
 
-Above I used base R colors that are rapped in quotes. For the full list of all possible base R colors here is a link to a list. [Base R Colors](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+Above I used base R colors that are rapped in quotes. For the full list of all possible base R colors here is a link to a list. [Base R Colors](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
 
 You can also you all the colors in the rainbow using HTML color hex codes from the link below. [HTML Colors](https://htmlcolorcodes.com/)
 
