@@ -295,7 +295,7 @@ ggplotly(p)
 These packages will help us make our example dashboard. Let's read these packages into our environment to create our example.
 
 ```{r}
-library(Rmarkdown)
+library(rmarkdown)
 library(shiny)
 library(knitr)
 library(flexdashboard)
