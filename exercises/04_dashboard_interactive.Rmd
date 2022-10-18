@@ -17,12 +17,14 @@ runtime: shiny
 
 #------------------------------ Load Packages ----------------------------------------
 library(flexdashboard)
+library(plotly)
 library(tidyverse)
 library(readxl)
 library(knitr)
 library(kableExtra)
 library(shiny)
 library(DT)
+library(formattable)
 
 ```
 
@@ -38,7 +40,7 @@ data_import <- read_xlsx("../data/isoqol_data.xlsx")
 data <- data_import %>% 
   mutate(tx_start_dt = as.Date(tx_start_dt), 
          tx_end_dt = as.Date(tx_end_dt),
-         enroll_dt = as.Date(enroll_dt))      
+         enroll_dt = as.Date(enroll_dt))   
   
 # Additional code here
 
@@ -76,22 +78,18 @@ Inputs {.sidebar}
  
 <hr>    
     
-__Use filters below to subset cohort__     
+__Use filters below to subset cohort based on their enrollment date.__  
+
 ```{r}
 
 #---------------- Insert Shiny Filters ----------------------
-
-# Filter by Enrollment Site
-selectInput("enroll_site", 
-            label = "Enrollment site",
-            choices = c("All","ARZ","RST","FLA"), 
-            selected = "All")
 
 # Filter by Enrollment Date
 
 # Stor min and max dates as objects
 min_enroll <- min(data$enroll_dt)
 max_enroll <- max(data$enroll_dt)
+
 sliderInput(inputId = "enroll_date",
             label = "Enrollment Date", 
             min = min_enroll,
@@ -107,12 +105,14 @@ Row  {data-height="200"}
 #---- Enrollment counts for all arms
 
  # Count the number of distinct IDs
-overall_n <- n_distinct(data$case)                  
 
-valueBox(value = overall_n,
+renderValueBox({
+  overall_n <- n_distinct(data$case[data$enroll_dt >= input$enroll_date[1] &
+                                    data$enroll_dt <= input$enroll_date[2]])  
+  valueBox(value = overall_n,
          caption = "Overall Accrual", 
          color = "#004c6d")
-
+})
 ```
 
 ### Arm 1
@@ -120,14 +120,18 @@ valueBox(value = overall_n,
 ```{r, message=FALSE, echo=FALSE}
 #---- Arm 1 enrollment  
 
+renderValueBox({
 # filter for Arm 1 cases only
 # Count the number of distinct IDs
-arm1_n <- data %>% filter(arm == "A: IFL") %>% with(n_distinct(case))
-
+arm1_n <- data %>% filter(arm == "A: IFL",
+                          enroll_dt >= input$enroll_date[1],
+                          enroll_dt <= input$enroll_date[2]) %>% with(n_distinct(case))
 # Create Value box
 valueBox(value = arm1_n, 
          caption = "A: IFL", 
          color = "#9dc6e0")
+})
+
 ```
 
 ### Arm 2
@@ -135,15 +139,18 @@ valueBox(value = arm1_n,
 ```{r}
 #---- Arm 2 enrollment  
 
+renderValueBox({
 # filter for Arm 2 cases only
 # Count the number of distinct IDs
-arm2_n <- data %>% filter(arm == "F: FOLFOX") %>% with(n_distinct(case))
-
-
+arm2_n <- data %>% filter(arm == "F: FOLFOX",
+                          enroll_dt >= input$enroll_date[1],
+                          enroll_dt <= input$enroll_date[2]) %>% with(n_distinct(case))
 # Create Value box
 valueBox(value = arm2_n, 
          caption = "F: FOLFOX", 
          color = "#9dc6e0")
+})
+
 ```
 
 ### Arm 3
@@ -151,14 +158,18 @@ valueBox(value = arm2_n,
 ```{r}
 #---- Arm 3 enrollment
 
+renderValueBox({
 # filter for Arm 3 cases only
 # Count the number of distinct IDs
-arm3_n <- data %>% filter(arm == "G: IROX") %>% with(n_distinct(case))
+arm3_n <- data %>% filter(arm == "G: IROX",
+                          enroll_dt >= input$enroll_date[1],
+                          enroll_dt <= input$enroll_date[2]) %>% with(n_distinct(case))
 
 # Create Value box
 valueBox(value = arm3_n, 
          caption = "G: IROX", 
          color = "#9dc6e0")
+})
 
 ```
 
@@ -166,39 +177,163 @@ valueBox(value = arm3_n,
 Row {data-height="800"}
 -----------------------------------------------------------------------  
 
-### Enrollment by Sex {data-width="400"}  
+### Enrollment by Sex {data-width="500"}  
 ```{r, echo=FALSE}
-ggplot(data, aes(x=sex)) + 
-  geom_bar(stat="count",fill="#a4b1bd") +
-  theme_minimal()
+renderPlotly({
+  
+plot_data <- data %>% filter(enroll_dt >= input$enroll_date[1],
+                enroll_dt <= input$enroll_date[2])
+ggplotly(ggplot(plot_data,aes(x=sex)) + 
+           geom_bar(stat="count",fill="#004c6d") +
+           ylab("Count") +
+           xlab("Sex") +
+           theme_minimal())
+})
+
 ```
 
-### Enrollment by Age {data-width="600"}  
+### Enrollment by Age {data-width="500"}  
 ```{r, echo=FALSE}
-ggplot(data, aes(x=arm, y=age,fill=arm)) +
-  geom_boxplot() + 
-  scale_fill_manual(values = c("#003f5c","#bc5090","#ffa600")) +
-  theme_bw() + 
-  ylab("Age at Enrollment (yrs)") 
+
+renderPlotly({
+  plot_data <- data %>% filter(enroll_dt >= input$enroll_date[1],
+                  enroll_dt <= input$enroll_date[2])
+  
+ ggplotly(ggplot(plot_data, aes(x=arm, y=age,fill=arm)) +
+            geom_boxplot() + 
+            scale_fill_manual(values = c("#003f5c","#bc5090","#ffa600")) +
+            theme_bw() + 
+            ylab("Age at Enrollment (yrs)") +
+            xlab("Treatment Arm") +
+            labs(fill = "Arm") +
+            theme())
+  
+})
+
 ```
+
 
 Surveys  
 ======================================================================
 
-Row
+Row  {data-height="200"}
 -----------------------------------------------------------------------  
 
-### Survey Completion Table
+### __Baseline Completion__
+```{r}
+ # Count the number of distinct IDs
+baseline <- data %>% filter(bsl == "Complete")          
+baseline_n <- length(unique(baseline$case))
 
-```{r, echo=FALSE}
-#------- Survey Completion  
-# Select the columns we want to show in our table
-survey_table <- data %>% select(case, arm, tx_start_dt, tx_end_dt, bsl, mo3, mo6)
-datatable(survey_table)
+gauge(value = baseline_n,
+      min = 0, 
+      max = length(unique(data$case)), 
+      label = "Baseline Survey",
+      gaugeSectors(success = c(0, length(unique(data$case)))))
+
+```
+
+### __Month 3 Completion__
+```{r}
+ # Count the number of distinct IDs
+mo3 <- data %>% filter(mo3 == "Complete")               
+mo3_n <- length(unique(mo3$case))
+
+gauge(value = mo3_n,
+      min = 0, 
+      max = length(unique(data$case)), 
+      label = "Month 3",
+      gaugeSectors(success = c(60, length(unique(data$case))), 
+                   warning = c(40, 59), 
+                   danger = c(0, 39)))
+
+```
+
+### __Month 6 Completion__
+```{r}
+ # Count the number of distinct IDs
+mo6 <- data %>% filter(mo6 == "Complete")  %>% count(case)                
+mo6_n <- length(unique(mo6$case))
+gauge(value = mo6_n,
+      min = 0, 
+      max = length(unique(data$case)), 
+      label = "Month 6",
+      gaugeSectors(success = c(60, length(unique(data$case))), 
+                   warning = c(40, 59), 
+                   danger = c(0, 39)))
+
 ```
 
 
 
+Row  {data-height="800"}  
+-----------------------------------------------------------------------  
+
+### Survey Completion Table
+
+```{r, echo=FALSE, context="server"}
+#------- Survey Completion  
+
+# Select the columns we want to show in our table
+survey_table <- data %>% select(case, arm, tx_start_dt, tx_end_dt, bsl, mo3, mo6)
+
+as.datatable(formattable(survey_table, list(
+  bsl = formatter("span", style = x ~ ifelse(x %in% c("Complete"), 
+                                               style(color = "green", 
+                                               font.weight = "bold"), 
+                                                  ifelse(x %in% c("Overdue"),
+                                                        style(color = "#d35e60", 
+                                                        font.weight = "bold"), 
+                                                  ifelse(x == "Waiting Treatment", 
+                                                         style(color = "#FFAA00", 
+                                                               font.weight = "bold"), NA))),
+                     ~ icontext(sapply(bsl, function(x) if (x %in% c("Complete")) "ok" 
+                                       else if (x %in% c("Overdue")) "remove"
+                                       else if (x == "Waiting Treatment") "alert" else ""), bsl)),
+    mo3 = formatter("span", style = x ~ ifelse(x %in% c("Complete"), 
+                                               style(color = "green", 
+                                               font.weight = "bold"), 
+                                                  ifelse(x %in% c("Overdue"),
+                                                        style(color = "#d35e60", 
+                                                        font.weight = "bold"), 
+                                                  ifelse(x == "Waiting Treatment", 
+                                                         style(color = "#FFAA00", 
+                                                               font.weight = "bold"), NA))),
+                     ~ icontext(sapply(mo3, function(x) if (x %in% c("Complete")) "ok" 
+                                       else if (x %in% c("Overdue")) "remove"
+                                       else if (x == "Waiting Treatment") "alert" else ""), mo3)),
+      mo6 = formatter("span", style = x ~ ifelse(x %in% c("Complete"), 
+                                               style(color = "green", 
+                                               font.weight = "bold"), 
+                                                  ifelse(x %in% c("Overdue"),
+                                                        style(color = "#d35e60", 
+                                                        font.weight = "bold"), 
+                                                  ifelse(x == "Waiting Treatment", 
+                                                         style(color = "#FFAA00", 
+                                                               font.weight = "bold"), NA))),
+                     ~ icontext(sapply(mo6, function(x) if (x %in% c("Complete")) "ok" 
+                                       else if (x %in% c("Overdue")) "remove"
+                                       else if (x == "Waiting Treatment") "alert" else ""), mo6)))),
+  colnames = c("Case" = "case",
+               "Treatment Arm" = "arm",
+               "Treatment Start" = "tx_start_dt",
+               "Treatment End" = "tx_end_dt",
+               "Baseline Survey" = "bsl",
+               "Month 3" = "mo3",
+               "Month 6" = "mo6"),
+  extensions = 'Buttons',
+  rownames = T,
+  filter = list(
+    position = 'top', clear = FALSE, plain = TRUE),
+  options = list(dom = 'Bfrtip',
+                 buttons = list(
+                   list(extend = "excel", text = "Download Table", filename = "export",
+                        exportOptions = list(
+                          modifier = list(page = "all"),
+                          orthogonal = "export"))),
+                 pageLength = nrow(survey_table)))
+
+```
 
 
 
